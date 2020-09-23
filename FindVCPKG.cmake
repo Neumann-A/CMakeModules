@@ -18,7 +18,7 @@ option(USE_VCPKG_TOOLCHAIN "Use VCPKG toolchain; Switching this option requires 
 
 #TODO: Use fetch_content to get vcpkg
 
-list(APPEND VCPKG_HINTS "${CMAKE_SOURCE_DIR}/../vcpkg/;${CMAKE_SOURCE_DIR}/vcpkg/;${CMAKE_BINARY_DIR}/../../vcpkg/;${CMAKE_BINARY_DIR}/../vcpkg/;${CMAKE_BINARY_DIR}/vcpkg/")
+list(APPEND VCPKG_HINTS "${CMAKE_SOURCE_DIR}/vcpkg/;${CMAKE_SOURCE_DIR}/../vcpkg/;${CMAKE_BINARY_DIR}/../vcpkg/;${CMAKE_BINARY_DIR}/../../vcpkg/")
 if(CMAKE_TOOLCHAIN_FILE AND EXISTS "${CMAKE_TOOLCHAIN_FILE}")
     get_filename_component(VCPKG_TOOLCHAIN_PATH "${CMAKE_TOOLCHAIN_FILE}" DIRECTORY)
     list(APPEND VCPKG_HINTS "${VCPKG_TOOLCHAIN_PATH}/../../")
@@ -47,6 +47,7 @@ endif()
 
 if(CMAKE_HOST_WIN32 AND EXISTS "${VCPKG_ROOT}/triplets/x64-windows-llvm-static.cmake")
     set(VCPKG_TARGET_TRIPLET "x64-windows-llvm-static" CACHE STRING "")
+    message(STATUS "Found custom llvm triplet! Using: ${VCPKG_TARGET_TRIPLET}")
 endif()
 if(NOT VCPKG_TARGET_TRIPLET)
     set(VCPKG_DEFAULT_ARCH x64)
