@@ -4,7 +4,7 @@
 
 function(DEDUCE_VCPKG_CRT_LINKAGE)
     # This is a function to not leak variables from the triplet into the project
-    include("${VCPKG_ROOT}/triplets/${VCPKG_TARGET_TRIPLET}.cmake")
+    include("${VCPKG_TRIPLET_PATH}/${VCPKG_TARGET_TRIPLET}.cmake")
     if(VCPKG_CRT_LINKAGE STREQUAL static)
         set(WITH_STATIC_CRT ON CACHE BOOL "" FORCE)
     else()
@@ -16,7 +16,7 @@ include(FeatureSummary)
 include(CMakePrintHelpers)
 option(USE_VCPKG_TOOLCHAIN "Use VCPKG toolchain; Switching this option requires a clean reconfigure" ON) 
 
-#TODO: Use fetch_content to get vcpkg
+
 
 list(APPEND VCPKG_HINTS "${CMAKE_SOURCE_DIR}/vcpkg/;${CMAKE_SOURCE_DIR}/../vcpkg/;${CMAKE_BINARY_DIR}/../vcpkg/;${CMAKE_BINARY_DIR}/../../vcpkg/")
 if(CMAKE_TOOLCHAIN_FILE AND EXISTS "${CMAKE_TOOLCHAIN_FILE}")
@@ -31,6 +31,7 @@ if(EXISTS "${VCPKG_ROOT}")
 elseif(VCPKG_FIND_REQUIRED)
     message(WARNING "Could not find VCPKG! ${VCPKG_ROOT} with hints: ${VCPKG_HINTS}")
     message(STATUS "Downloading vcpkg.")
+    #TODO: Use fetch_content to get vcpkg (personally I am using a git submodule and so should you)
     include(FetchContent)
     FetchContent_Declare(
         vcpkg
@@ -45,10 +46,29 @@ elseif(VCPKG_FIND_REQUIRED)
     find_path(VCPKG_ROOT NAMES .vcpkg-root HINTS ${VCPKG_HINTS} PATHS "./vcpkg")
 endif()
 
-if(CMAKE_HOST_WIN32 AND EXISTS "${VCPKG_ROOT}/triplets/x64-windows-llvm-static.cmake")
-    set(VCPKG_TARGET_TRIPLET "x64-windows-llvm-static" CACHE STRING "")
-    message(STATUS "Found custom llvm triplet! Using: ${VCPKG_TARGET_TRIPLET}")
+foreach(triplet_path IN LISTS VCPKG_OVERLAY_TRIPLETS)
+endforeach()
+
+if(CMAKE_HOST_WIN32)
+    set(VCPKG_PREFERRED_TRIPLET x64-windows-llvm-static CACHE STRING "Prefered vcpkg triplet if it exists")
+else()
+    set(VCPKG_PREFERRED_TRIPLET none CACHE STRING "Prefered vcpkg triplet if it exists")
 endif()
+
+foreach(triplet_path IN LISTS VCPKG_OVERLAY_TRIPLETS)
+    if(EXISTS "${triplet_path}/${VCPKG_PREFERRED_TRIPLET}.cmake")
+        set(VCPKG_TARGET_TRIPLET "${VCPKG_PREFERRED_TRIPLET}" CACHE STRING "")
+        message(STATUS "Found preferred triplet! Using: ${VCPKG_TARGET_TRIPLET}")
+        set(VCPKG_TRIPLET_PATH "${triplet_path}")
+        break()
+    endif()
+endforeach()
+if(EXISTS "${VCPKG_ROOT}/triplets/${VCPKG_PREFERRED_TRIPLET}.cmake")
+    set(VCPKG_TARGET_TRIPLET "${VCPKG_PREFERRED_TRIPLET}" CACHE STRING "")
+    message(STATUS "Found preferred triplet! Using: ${VCPKG_TARGET_TRIPLET}")
+    set(VCPKG_TRIPLET_PATH "${VCPKG_ROOT}/triplets")
+endif()
+
 if(NOT VCPKG_TARGET_TRIPLET)
     set(VCPKG_DEFAULT_ARCH x64)
     if(DEFINED ENV{VCPKG_DEFAULT_TRIPLET})
