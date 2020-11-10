@@ -50,7 +50,8 @@ foreach(triplet_path IN LISTS VCPKG_OVERLAY_TRIPLETS)
 endforeach()
 
 if(CMAKE_HOST_WIN32)
-    set(VCPKG_PREFERRED_TRIPLET x64-windows-llvm-static CACHE STRING "Prefered vcpkg triplet if it exists")
+    #set(VCPKG_PREFERRED_TRIPLET x64-windows-llvm-static CACHE STRING "Prefered vcpkg triplet if it exists")
+    set(VCPKG_PREFERRED_TRIPLET x64-windows-llvm CACHE STRING "Prefered vcpkg triplet if it exists")
 else()
     set(VCPKG_PREFERRED_TRIPLET none CACHE STRING "Prefered vcpkg triplet if it exists")
 endif()
@@ -103,3 +104,9 @@ DEDUCE_VCPKG_CRT_LINKAGE()
 set_package_properties(VCPKG PROPERTIES
                              DESCRIPTION "C++ Library Manager for Windows, Linux, and MacOS."
                              URL "https://github.com/microsoft/vcpkg")
+
+if(CMAKE_GENERATOR MATCHES "Visual Studio")
+    set(VCPKG_APPLOCAL_DEPS OFF CACHE BOOL "" FORCE)
+else()
+    set(VCPKG_APPLOCAL_DEPS ON CACHE BOOL "" FORCE)
+endif()
