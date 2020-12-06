@@ -54,7 +54,7 @@ endif()
 
 function(vcpkg_get_triplet_path triplet outpath)
     macro(vcpkg_find_triplet tripbasepath intrip)
-        if(EXISTS "${tripbasepath}/${intrip}")
+        if(EXISTS "${tripbasepath}/${intrip}.cmake")
             set(VCPKG_TARGET_TRIPLET "${intrip}" CACHE STRING "")
             message(STATUS "Found preferred triplet! Using: ${VCPKG_TARGET_TRIPLET}")
             set(${outpath} "${tripbasepath}" PARENT_SCOPE)
