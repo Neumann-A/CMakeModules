@@ -51,7 +51,7 @@ endif()
 
 function(vcpkg_get_triplet_path triplet outpath)
     macro(vcpkg_find_triplet tripbasepath intrip)
-        string(REGEX REPLACE [[\\(\\)?]] [\\] tripbasepath "${tripbasepath}")
+        string(REGEX REPLACE [[\\(\\)?]] [[\\]] tripbasepath "${tripbasepath}")
         file(TO_CMAKE_PATH "${tripbasepath}" tripbasepath)
         file(REAL_PATH "${tripbasepath}" tripbasepath)
         if(EXISTS "${tripbasepath}/${intrip}.cmake")
