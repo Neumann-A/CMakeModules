@@ -25,7 +25,7 @@ elseif(VCPKG_FIND_REQUIRED)
         vcpkg
         GIT_REPOSITORY https://github.com/microsoft/vcpkg
         GIT_TAG        master
-        SOURCE_DIR ${CMAKE_SOURCE_DIR}/vcpkg
+        SOURCE_DIR "${CMAKE_SOURCE_DIR}/vcpkg"
         )
     FetchContent_GetProperties(vcpkg)
     if(NOT vcpkg_POPULATED)
