@@ -1,18 +1,17 @@
 
 
 include(FindPackageHandleStandardArgs)
-#find_package_handle_standard_args
 include(SelectLibraryConfigurations)
-#select_library_configurations(basename)
 
-find_package(qwt CONFIG)
+find_package(qwt QUIET CONFIG)
 if(qwt_FOUND)
+    find_package_handle_standard_args(qwt CONFIG_MODE)
     return()
 endif()
 
 find_package(Qt6 REQUIRED COMPONENTS Svg Widgets Gui Concurrent PrintSupport OpenGL)
 
-find_file(qwt_INCLUDE_DIR NAMES "qwt.h" PATH_SUFFIXES "include")
+find_path(qwt_INCLUDE_DIR NAMES "qwt.h" PATH_SUFFIXES "include")
 find_library(qwt_LIBRARY_RELEASE NAMES qwt NAMES_PER_DIR)
 find_library(qwt_LIBRARY_DEBUG NAMES qwt_debug qwtd qwt NAMES_PER_DIR)
 select_library_configurations(qwt)

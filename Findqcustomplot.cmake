@@ -1,18 +1,18 @@
 
 
 include(FindPackageHandleStandardArgs)
-#find_package_handle_standard_args
 include(SelectLibraryConfigurations)
-#select_library_configurations(basename)
 
-find_package(qcustomplot CONFIG)
+
+find_package(qcustomplot QUIET CONFIG)
 if(qcustomplot_FOUND)
+    find_package_handle_standard_args(qcustomplot CONFIG_MODE)
     return()
 endif()
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets Gui PrintSupport)
 
-find_file(qcustomplot_INCLUDE_DIR NAMES "qcustomplot.h" PATH_SUFFIXES "include")
+find_path(qcustomplot_INCLUDE_DIR NAMES "qcustomplot.h" PATH_SUFFIXES "include")
 find_library(qcustomplot_LIBRARY_RELEASE NAMES qcustomplot NAMES_PER_DIR)
 find_library(qcustomplot_LIBRARY_DEBUG NAMES qcustomplotd qcustomplot NAMES_PER_DIR)
 select_library_configurations(qcustomplot)
