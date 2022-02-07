@@ -11,6 +11,7 @@ if(qcustomplot_FOUND)
 endif()
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets Gui PrintSupport)
+find_package(OpenGL COMPONENTS OpenGL REQUIRED)
 
 find_path(qcustomplot_INCLUDE_DIR NAMES "qcustomplot.h" PATH_SUFFIXES "include")
 find_library(qcustomplot_LIBRARY_RELEASE NAMES qcustomplot NAMES_PER_DIR)
@@ -38,4 +39,5 @@ if(qcustomplot_LIBRARIES AND NOT TARGET qcustomplot::qcustomplot)
     endif()
 endif()
 
+target_link_libraries(qcustomplot::qcustomplot INTERFACE OpenGL::GL Qt6::Gui Qt6::Widgets Qt6::PrintSupport)
 find_package_handle_standard_args(qcustomplot REQUIRED_VARS qcustomplot_LIBRARIES qcustomplot_INCLUDE_DIR)
