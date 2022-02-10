@@ -15,7 +15,7 @@ find_package(OpenGL COMPONENTS OpenGL REQUIRED)
 
 find_path(qcustomplot_INCLUDE_DIR NAMES "qcustomplot.h" PATH_SUFFIXES "include")
 find_library(qcustomplot_LIBRARY_RELEASE NAMES qcustomplot NAMES_PER_DIR)
-find_library(qcustomplot_LIBRARY_DEBUG NAMES qcustomplotd qcustomplot NAMES_PER_DIR)
+find_library(qcustomplot_LIBRARY_DEBUG NAMES qcustomplot_debug qcustomplotd qcustomplot NAMES_PER_DIR)
 select_library_configurations(qcustomplot)
 
 set(qcustomplot_FOUND FALSE)
