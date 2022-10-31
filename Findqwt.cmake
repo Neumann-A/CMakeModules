@@ -11,7 +11,7 @@ endif()
 
 find_package(Qt6 REQUIRED COMPONENTS Svg Widgets Gui Concurrent PrintSupport OpenGL)
 
-find_path(qwt_INCLUDE_DIR NAMES "qwt.h" PATH_SUFFIXES "include")
+find_path(qwt_INCLUDE_DIR NAMES "qwt.h" PATH_SUFFIXES "include" "include/qwt")
 find_library(qwt_LIBRARY_RELEASE NAMES qwt NAMES_PER_DIR)
 find_library(qwt_LIBRARY_DEBUG NAMES qwt_debug qwtd qwt NAMES_PER_DIR)
 select_library_configurations(qwt)
